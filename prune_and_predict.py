@@ -183,6 +183,9 @@ print("Number of correct predictions after pruning: %d" % sum(correct))
 
 num_images = len(correct)
 print("Accuracy after pruning: %.2f%%" % ((sum(correct) * 100) / num_images))
+model.save("before_finetune.h5")
 
+model.fit(x_train, y_train, batch_size=32, epochs=100, validation_data = (x_test, y_test), verbose=1)
 
+model.save("after_finetune.h5")
 
