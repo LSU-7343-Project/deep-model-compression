@@ -49,9 +49,9 @@ def create_model():
 
 def load_saved_model(model_path):
     model = None
+    model_path = saved_dir + '/' + model_path
     if os.path.exists(model_path):
         # Load saved model if exists
         print("-------------------Load model---------------------------")
         model = load_model(model_path)
-        model.summary()
     return model
