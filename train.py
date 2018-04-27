@@ -51,7 +51,7 @@ def train(_model, saved_path, epochs, patience):
                                 epochs=epochs,  # number of iterations
                                 validation_data=(x_test, y_test),
                                 callbacks=[checkpoint, early_stopping],
-                                verbose=0)
+                                verbose=2)
     return _model, _model_details
 
 
@@ -75,6 +75,10 @@ save_history(model_details, model_history_path)
 # Evaluate the model
 score_ori = model.evaluate(x_test, y_test, verbose=0)
 print("Before Pruning, accuracy: %.2f%%" % (score_ori[1] * 100) + '\n')
+
+ori_weights = model.get_weights()
+print("{} of {} is zero".format(np.count_nonzero(ori_weights[0] == 0),
+                                ori_weights[0].size))
 
 # Predictions
 class_pred = model.predict(x_test, batch_size=32)
@@ -146,8 +150,8 @@ for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
     best_threshold, best_threshold_acc = max(accuracy_threshold,
                                              key=itemgetter(1))
     optimal_sol[layer_name] = best_threshold
-    print("Best threshold: {:.3f}, accuracy: {:.2%} \n"
-          .format(best_threshold, best_threshold_acc))
+    print("Layout {}, Best threshold: {:.3f}, accuracy: {:.2%} \n"
+          .format(layer_name, best_threshold, best_threshold_acc))
 
 print("\nOur optimal_sol")
 for k in optimal_sol:
@@ -203,5 +207,8 @@ model_final.compile(loss='sparse_categorical_crossentropy',
 score_final = model_final.evaluate(x_test, y_test, verbose=0)
 print("After combine pruning, accuracy: %.2f%%" % (
         score_final[1] * 100) + '\n')
+final_weights = model_final.get_weights()
+print("{} of {} is zero".format(np.count_nonzero(final_weights[0] == 0),
+                                final_weights[0].size))
 
 model_final.save('final_model.h5')
