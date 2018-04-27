@@ -1,5 +1,4 @@
 import os
-import decimal
 import pickle
 from operator import itemgetter
 
@@ -44,7 +43,7 @@ def train(_model, saved_path, epochs, patience):
                                  mode='auto')
 
     early_stopping = EarlyStopping(monitor="val_loss", patience=patience,
-                                   verbose=0, mode='auto')
+                                   verbose=1, mode='auto')
 
     _model_details = _model.fit(x_train, y_train,
                                 batch_size=32,
@@ -52,7 +51,7 @@ def train(_model, saved_path, epochs, patience):
                                 epochs=epochs,  # number of iterations
                                 validation_data=(x_test, y_test),
                                 callbacks=[checkpoint, early_stopping],
-                                verbose=1)
+                                verbose=0)
     return _model, _model_details
 
 
@@ -118,7 +117,7 @@ def drange(x, y, jump):
 optimal_sol = {}
 
 for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
-    print('Pruning layer ' + layer_name + '...')
+    print('Pruning layer ' + layer_name)
     model_copy = clone_model(model)
     model_copy.set_weights(model.get_weights())
     # Generate layer dictionary from cloned model
@@ -127,18 +126,17 @@ for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
     weights = layer.get_weights()
     accuracy_threshold = []
     for threshold in drange(thresholds[0],
-                            # include end
-                            thresholds[1] + thresholds[2],
+                            thresholds[1],
                             thresholds[2]):
         # weights[0] is weight tensor, weights[1] is bias tensor,
         # prune weights only
-        print('Current threshold is ' + str(threshold))
+        print('Current threshold is {:.3f}'.format(threshold))
         weights_copy = np.copy(weights)
         weights_copy[0] = prune(weights_copy[0], threshold)
         layer.set_weights(weights_copy)
         print("sparsity:",
               np.count_nonzero(weights_copy[0]) / weights_copy[0].size, '\n')
-        saved_name = layer_name + '_' + str(threshold)
+        saved_name = layer_name + '_{:.3f}'.format(threshold)
         model_copy, model_copy_detail = train(model_copy, saved_name + '.h5',
                                               50, 5)
         save_history(model_copy_detail, saved_name + '_history')
@@ -148,8 +146,8 @@ for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
     best_threshold, best_threshold_acc = max(accuracy_threshold,
                                              key=itemgetter(1))
     optimal_sol[layer_name] = best_threshold
-    print("Best threshold: {}, accuracy: {:.2%} \n".format(best_threshold,
-                                                           best_threshold_acc))
+    print("Best threshold: {:.3f}, accuracy: {:.2%} \n"
+          .format(best_threshold, best_threshold_acc))
 
 print("\nOur optimal_sol")
 for k in optimal_sol:
@@ -166,9 +164,9 @@ for layer_name in prune_layouts:
     t_threshold = optimal_sol[layer_name]
     t_weights[0] = prune(t_weights[0], t_threshold)
     t_layer.set_weights(t_weights)
-    print("Layout {} sparsity: {}".format(layer_name,
-                                          np.count_nonzero(t_weights[0]) /
-                                          t_weights[0].size))
+    print("Layout: {}, threshold: {:.3f},  sparsity: {}"
+          .format(layer_name, t_threshold,
+                  np.count_nonzero(t_weights[0]) / t_weights[0].size))
 
 saved_name = 'transition_model'
 
@@ -193,15 +191,15 @@ for layer_name in prune_layouts:
     f_threshold = optimal_sol[layer_name]
     f_weights[0] = prune(f_weights[0], f_threshold)
     f_layer.set_weights(f_weights)
-    print("Layout {} sparsity: {}".format(layer_name,
-                                          np.count_nonzero(f_weights[0]) /
-                                          f_weights[0].size))
+    print("Layout {}, threshold: {:.3f}, sparsity: {}"
+          .format(layer_name, f_threshold,
+                  np.count_nonzero(f_weights[0]) / f_weights[0].size))
 
 model_final.compile(loss='sparse_categorical_crossentropy',
-                         optimizer=Adam(lr=1.0e-4),
-                         # Adam optimizer with 1.0e-4 learning rate
-                         # Metrics to be evaluated by the model
-                         metrics=['accuracy'])
+                    optimizer=Adam(lr=1.0e-4),
+                    # Adam optimizer with 1.0e-4 learning rate
+                    # Metrics to be evaluated by the model
+                    metrics=['accuracy'])
 score_final = model_final.evaluate(x_test, y_test, verbose=0)
 print("After combine pruning, accuracy: %.2f%%" % (
         score_final[1] * 100) + '\n')
