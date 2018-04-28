@@ -1,0 +1,1011 @@
+/home/taurus/.conda/envs/tf/lib/python3.6/site-packages/h5py/__init__.py:36: FutureWarning: Conversion of the second argument of issubdtype from `float` to `np.floating` is deprecated. In future, it will be treated as `np.float64 == np.dtype(float).type`.
+  from ._conv import register_converters as _register_converters
+Using TensorFlow backend.
+32 3
+num_classes = 10
+Training set size:	 50000
+Testing set size:	 10000
+2018-04-28 17:12:11.903968: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-04-28 17:12:12.024780: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:898] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-04-28 17:12:12.025185: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1344] Found device 0 with properties: 
+name: GeForce GTX 1080 Ti major: 6 minor: 1 memoryClockRate(GHz): 1.683
+pciBusID: 0000:01:00.0
+totalMemory: 10.91GiB freeMemory: 2.71GiB
+2018-04-28 17:12:12.125312: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:898] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-04-28 17:12:12.125601: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1344] Found device 1 with properties: 
+name: GeForce GTX 1080 Ti major: 6 minor: 1 memoryClockRate(GHz): 1.683
+pciBusID: 0000:02:00.0
+totalMemory: 10.91GiB freeMemory: 10.55GiB
+2018-04-28 17:12:12.125701: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1423] Adding visible gpu devices: 0, 1
+2018-04-28 17:12:12.948236: I tensorflow/core/common_runtime/gpu/gpu_device.cc:911] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-04-28 17:12:12.948263: I tensorflow/core/common_runtime/gpu/gpu_device.cc:917]      0 1 
+2018-04-28 17:12:12.948268: I tensorflow/core/common_runtime/gpu/gpu_device.cc:930] 0:   N Y 
+2018-04-28 17:12:12.948270: I tensorflow/core/common_runtime/gpu/gpu_device.cc:930] 1:   Y N 
+2018-04-28 17:12:12.950444: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1041] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2425 MB memory) -> physical GPU (device: 0, name: GeForce GTX 1080 Ti, pci bus id: 0000:01:00.0, compute capability: 6.1)
+2018-04-28 17:12:12.974414: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1041] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 10211 MB memory) -> physical GPU (device: 1, name: GeForce GTX 1080 Ti, pci bus id: 0000:02:00.0, compute capability: 6.1)
+Original accuracy: 84.22%
+
+0 of 1728 is zero
+airplaneautomobile bird  cat deer  dog froghorse shiptruck     
+  841   16   31    9   12    4    9   10   41   27 (0)airplane
+    4  928    0    1    2    2    1    1   10   51 (1)automobile
+   32    2  750   29   49   54   52   19    7    6 (2)bird
+   10    4   37  598   54  196   50   30    7   14 (3)cat
+   10    2   25   24  848   29   27   29    5    1 (4)deer
+    8    1   23   53   27  842    9   26    2    9 (5)dog
+    6    2   16   28   13   12  911    4    2    6 (6)frog
+    9    1   10   11   41   34    6  880    0    8 (7)horse
+   33   19    4    7    3    1    3    2  902   26 (8)ship
+   15   40    2    4    1    1    3    3    9  922 (9)truck
+
+---------------Start Pruning----------------------------------
+
+----------------Pruning layer conv2d_1-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.8964120370370371 
+
+Pruned, accuracy: 84.03%
+
+Pruned -> trained, accuracy: 84.68%
+
+sparsity: 0.8854166666666666 
+
+Pruned -> trained -> Pruned, accuracy: 84.68%
+
+>>> Current threshold is 0.015 <<<
+sparsity: 0.8483796296296297 
+
+Pruned, accuracy: 83.73%
+
+Pruned -> trained, accuracy: 84.94%
+
+sparsity: 0.8362268518518519 
+
+Pruned -> trained -> Pruned, accuracy: 84.98%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.7991898148148148 
+
+Pruned, accuracy: 83.74%
+
+Pruned -> trained, accuracy: 85.19%
+
+sparsity: 0.7829861111111112 
+
+Pruned -> trained -> Pruned, accuracy: 85.14%
+
+>>> Current threshold is 0.025 <<<
+sparsity: 0.7581018518518519 
+
+Pruned, accuracy: 83.44%
+
+Pruned -> trained, accuracy: 85.25%
+
+sparsity: 0.7349537037037037 
+
+Pruned -> trained -> Pruned, accuracy: 84.98%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.7123842592592593 
+
+Pruned, accuracy: 80.87%
+
+Pruned -> trained, accuracy: 85.71%
+
+sparsity: 0.6875 
+
+Pruned -> trained -> Pruned, accuracy: 85.43%
+
+>>> Current threshold is 0.035 <<<
+sparsity: 0.6666666666666666 
+
+Pruned, accuracy: 79.58%
+
+Pruned -> trained, accuracy: 85.40%
+
+sparsity: 0.6319444444444444 
+
+Pruned -> trained -> Pruned, accuracy: 84.50%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.6163194444444444 
+
+Pruned, accuracy: 79.24%
+
+Pruned -> trained, accuracy: 86.12%
+
+sparsity: 0.5740740740740741 
+
+Pruned -> trained -> Pruned, accuracy: 85.45%
+
+>>> Current threshold is 0.045 <<<
+sparsity: 0.5752314814814815 
+
+Pruned, accuracy: 76.71%
+
+Pruned -> trained, accuracy: 85.91%
+
+sparsity: 0.5237268518518519 
+
+Pruned -> trained -> Pruned, accuracy: 85.02%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.5289351851851852 
+
+Pruned, accuracy: 71.44%
+
+Pruned -> trained, accuracy: 85.98%
+
+sparsity: 0.48032407407407407 
+
+Pruned -> trained -> Pruned, accuracy: 84.43%
+
+>>> Current threshold is 0.055 <<<
+sparsity: 0.47164351851851855 
+
+Pruned, accuracy: 66.98%
+
+Pruned -> trained, accuracy: 85.50%
+
+sparsity: 0.4351851851851852 
+
+Pruned -> trained -> Pruned, accuracy: 82.60%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.421875 
+
+Pruned, accuracy: 55.49%
+
+Pruned -> trained, accuracy: 86.20%
+
+sparsity: 0.3894675925925926 
+
+Pruned -> trained -> Pruned, accuracy: 79.11%
+
+*****Layout conv2d_1, Best threshold: 0.040, accuracy: 85.45% *****
+
+
+----------------Pruning layer conv2d_2-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.8631184895833334 
+
+Pruned, accuracy: 84.14%
+
+Pruned -> trained, accuracy: 84.98%
+
+sparsity: 0.8491753472222222 
+
+Pruned -> trained -> Pruned, accuracy: 84.91%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.7249077690972222 
+
+Pruned, accuracy: 83.93%
+
+Pruned -> trained, accuracy: 84.65%
+
+sparsity: 0.7058376736111112 
+
+Pruned -> trained -> Pruned, accuracy: 84.68%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.5921766493055556 
+
+Pruned, accuracy: 83.56%
+
+Pruned -> trained, accuracy: 85.45%
+
+sparsity: 0.5640733506944444 
+
+Pruned -> trained -> Pruned, accuracy: 85.61%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.4610731336805556 
+
+Pruned, accuracy: 82.78%
+
+Pruned -> trained, accuracy: 85.17%
+
+sparsity: 0.4379069010416667 
+
+Pruned -> trained -> Pruned, accuracy: 85.14%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.3438042534722222 
+
+Pruned, accuracy: 80.61%
+
+Pruned -> trained, accuracy: 85.63%
+
+sparsity: 0.3239203559027778 
+
+Pruned -> trained -> Pruned, accuracy: 85.22%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.24039713541666666 
+
+Pruned, accuracy: 77.21%
+
+Pruned -> trained, accuracy: 84.93%
+
+sparsity: 0.2255316840277778 
+
+Pruned -> trained -> Pruned, accuracy: 84.05%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.15771484375 
+
+Pruned, accuracy: 66.52%
+
+Pruned -> trained, accuracy: 85.74%
+
+sparsity: 0.1355251736111111 
+
+Pruned -> trained -> Pruned, accuracy: 82.79%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.09798177083333333 
+
+Pruned, accuracy: 53.03%
+
+Pruned -> trained, accuracy: 85.51%
+
+sparsity: 0.08675130208333333 
+
+Pruned -> trained -> Pruned, accuracy: 78.64%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.05764431423611111 
+
+Pruned, accuracy: 35.12%
+
+Pruned -> trained, accuracy: 85.59%
+
+sparsity: 0.049153645833333336 
+
+Pruned -> trained -> Pruned, accuracy: 56.96%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.033365885416666664 
+
+Pruned, accuracy: 17.18%
+
+Pruned -> trained, accuracy: 84.76%
+
+sparsity: 0.028971354166666668 
+
+Pruned -> trained -> Pruned, accuracy: 35.48%
+
+*****Layout conv2d_2, Best threshold: 0.030, accuracy: 85.61% *****
+
+
+----------------Pruning layer conv2d_3-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.8264024522569444 
+
+Pruned, accuracy: 84.15%
+
+Pruned -> trained, accuracy: 84.75%
+
+sparsity: 0.8042399088541666 
+
+Pruned -> trained -> Pruned, accuracy: 84.87%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.6602105034722222 
+
+Pruned, accuracy: 84.40%
+
+Pruned -> trained, accuracy: 84.75%
+
+sparsity: 0.6359320746527778 
+
+Pruned -> trained -> Pruned, accuracy: 84.89%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.5034044053819444 
+
+Pruned, accuracy: 83.77%
+
+Pruned -> trained, accuracy: 85.04%
+
+sparsity: 0.4652642144097222 
+
+Pruned -> trained -> Pruned, accuracy: 84.95%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.3636881510416667 
+
+Pruned, accuracy: 84.13%
+
+Pruned -> trained, accuracy: 85.23%
+
+sparsity: 0.3369276258680556 
+
+Pruned -> trained -> Pruned, accuracy: 85.00%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.24928114149305555 
+
+Pruned, accuracy: 83.15%
+
+Pruned -> trained, accuracy: 85.23%
+
+sparsity: 0.22920735677083334 
+
+Pruned -> trained -> Pruned, accuracy: 84.76%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.16109212239583334 
+
+Pruned, accuracy: 79.83%
+
+Pruned -> trained, accuracy: 85.25%
+
+sparsity: 0.1421440972222222 
+
+Pruned -> trained -> Pruned, accuracy: 83.67%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.09749348958333333 
+
+Pruned, accuracy: 67.42%
+
+Pruned -> trained, accuracy: 84.97%
+
+sparsity: 0.08467610677083333 
+
+Pruned -> trained -> Pruned, accuracy: 78.24%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.05685763888888889 
+
+Pruned, accuracy: 45.95%
+
+Pruned -> trained, accuracy: 84.70%
+
+sparsity: 0.05185275607638889 
+
+Pruned -> trained -> Pruned, accuracy: 60.32%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.031670464409722224 
+
+Pruned, accuracy: 23.97%
+
+Pruned -> trained, accuracy: 84.93%
+
+sparsity: 0.029012044270833332 
+
+Pruned -> trained -> Pruned, accuracy: 32.29%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.017795138888888888 
+
+Pruned, accuracy: 12.07%
+
+Pruned -> trained, accuracy: 84.59%
+
+sparsity: 0.016574435763888888 
+
+Pruned -> trained -> Pruned, accuracy: 23.92%
+
+*****Layout conv2d_3, Best threshold: 0.040, accuracy: 85.00% *****
+
+
+----------------Pruning layer conv2d_4-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.8090481228298612 
+
+Pruned, accuracy: 84.16%
+
+Pruned -> trained, accuracy: 84.62%
+
+sparsity: 0.7829318576388888 
+
+Pruned -> trained -> Pruned, accuracy: 84.65%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.6242607964409722 
+
+Pruned, accuracy: 84.14%
+
+Pruned -> trained, accuracy: 84.95%
+
+sparsity: 0.5941094292534722 
+
+Pruned -> trained -> Pruned, accuracy: 85.02%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.455322265625 
+
+Pruned, accuracy: 83.67%
+
+Pruned -> trained, accuracy: 84.97%
+
+sparsity: 0.4345431857638889 
+
+Pruned -> trained -> Pruned, accuracy: 85.19%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.3115980360243056 
+
+Pruned, accuracy: 83.51%
+
+Pruned -> trained, accuracy: 85.31%
+
+sparsity: 0.2835964626736111 
+
+Pruned -> trained -> Pruned, accuracy: 84.90%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.19786241319444445 
+
+Pruned, accuracy: 81.88%
+
+Pruned -> trained, accuracy: 84.94%
+
+sparsity: 0.1784735785590278 
+
+Pruned -> trained -> Pruned, accuracy: 84.74%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.1133761935763889 
+
+Pruned, accuracy: 77.25%
+
+Pruned -> trained, accuracy: 85.12%
+
+sparsity: 0.10353597005208333 
+
+Pruned -> trained -> Pruned, accuracy: 84.01%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.059990776909722224 
+
+Pruned, accuracy: 67.74%
+
+Pruned -> trained, accuracy: 85.64%
+
+sparsity: 0.05135769314236111 
+
+Pruned -> trained -> Pruned, accuracy: 80.38%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.02960205078125 
+
+Pruned, accuracy: 43.72%
+
+Pruned -> trained, accuracy: 85.17%
+
+sparsity: 0.025641547309027776 
+
+Pruned -> trained -> Pruned, accuracy: 73.60%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.013522677951388888 
+
+Pruned, accuracy: 22.87%
+
+Pruned -> trained, accuracy: 85.25%
+
+sparsity: 0.011942545572916666 
+
+Pruned -> trained -> Pruned, accuracy: 61.11%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.005811903211805556 
+
+Pruned, accuracy: 13.36%
+
+Pruned -> trained, accuracy: 84.39%
+
+sparsity: 0.004998101128472222 
+
+Pruned -> trained -> Pruned, accuracy: 15.80%
+
+*****Layout conv2d_4, Best threshold: 0.030, accuracy: 85.19% *****
+
+
+----------------Pruning layer conv2d_5-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.7788662380642362 
+
+Pruned, accuracy: 84.11%
+
+Pruned -> trained, accuracy: 84.69%
+
+sparsity: 0.7666829427083334 
+
+Pruned -> trained -> Pruned, accuracy: 84.63%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.5711263020833334 
+
+Pruned, accuracy: 83.99%
+
+Pruned -> trained, accuracy: 85.01%
+
+sparsity: 0.5264790852864584 
+
+Pruned -> trained -> Pruned, accuracy: 84.88%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.3914116753472222 
+
+Pruned, accuracy: 83.19%
+
+Pruned -> trained, accuracy: 84.95%
+
+sparsity: 0.3481580946180556 
+
+Pruned -> trained -> Pruned, accuracy: 84.69%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.24858601888020834 
+
+Pruned, accuracy: 81.56%
+
+Pruned -> trained, accuracy: 84.30%
+
+sparsity: 0.21912638346354166 
+
+Pruned -> trained -> Pruned, accuracy: 83.95%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.14601304796006945 
+
+Pruned, accuracy: 78.01%
+
+Pruned -> trained, accuracy: 85.15%
+
+sparsity: 0.1251491970486111 
+
+Pruned -> trained -> Pruned, accuracy: 81.93%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.080413818359375 
+
+Pruned, accuracy: 68.25%
+
+Pruned -> trained, accuracy: 85.13%
+
+sparsity: 0.06885443793402778 
+
+Pruned -> trained -> Pruned, accuracy: 76.82%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.041527642144097224 
+
+Pruned, accuracy: 50.49%
+
+Pruned -> trained, accuracy: 84.88%
+
+sparsity: 0.034983317057291664 
+
+Pruned -> trained -> Pruned, accuracy: 64.64%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.019724527994791668 
+
+Pruned, accuracy: 26.68%
+
+Pruned -> trained, accuracy: 85.59%
+
+sparsity: 0.016716851128472224 
+
+Pruned -> trained -> Pruned, accuracy: 40.11%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.008867051866319444 
+
+Pruned, accuracy: 13.81%
+
+Pruned -> trained, accuracy: 85.76%
+
+sparsity: 0.007541232638888889 
+
+Pruned -> trained -> Pruned, accuracy: 17.97%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.0037977430555555555 
+
+Pruned, accuracy: 12.37%
+
+Pruned -> trained, accuracy: 84.90%
+
+sparsity: 0.003302680121527778 
+
+Pruned -> trained -> Pruned, accuracy: 14.19%
+
+*****Layout conv2d_5, Best threshold: 0.020, accuracy: 84.88% *****
+
+
+----------------Pruning layer conv2d_6-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.7568511962890625 
+
+Pruned, accuracy: 84.25%
+
+Pruned -> trained, accuracy: 84.03%
+
+sparsity: 0.7477806939019097 
+
+Pruned -> trained -> Pruned, accuracy: 84.01%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.5342220730251737 
+
+Pruned, accuracy: 84.11%
+
+Pruned -> trained, accuracy: 84.78%
+
+sparsity: 0.4844156901041667 
+
+Pruned -> trained -> Pruned, accuracy: 84.70%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.349365234375 
+
+Pruned, accuracy: 83.82%
+
+Pruned -> trained, accuracy: 84.40%
+
+sparsity: 0.3019968668619792 
+
+Pruned -> trained -> Pruned, accuracy: 83.88%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.20835367838541666 
+
+Pruned, accuracy: 83.13%
+
+Pruned -> trained, accuracy: 85.09%
+
+sparsity: 0.17734273274739584 
+
+Pruned -> trained -> Pruned, accuracy: 84.45%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.1126556396484375 
+
+Pruned, accuracy: 81.51%
+
+Pruned -> trained, accuracy: 84.61%
+
+sparsity: 0.0951385498046875 
+
+Pruned -> trained -> Pruned, accuracy: 84.04%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.055031670464409724 
+
+Pruned, accuracy: 78.23%
+
+Pruned -> trained, accuracy: 85.84%
+
+sparsity: 0.045659383138020836 
+
+Pruned -> trained -> Pruned, accuracy: 81.88%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.024100409613715276 
+
+Pruned, accuracy: 67.98%
+
+Pruned -> trained, accuracy: 85.38%
+
+sparsity: 0.0195159912109375 
+
+Pruned -> trained -> Pruned, accuracy: 75.35%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.009472317165798612 
+
+Pruned, accuracy: 36.69%
+
+Pruned -> trained, accuracy: 85.56%
+
+sparsity: 0.007402208116319444 
+
+Pruned -> trained -> Pruned, accuracy: 56.44%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.003292507595486111 
+
+Pruned, accuracy: 18.70%
+
+Pruned -> trained, accuracy: 85.47%
+
+sparsity: 0.002478705512152778 
+
+Pruned -> trained -> Pruned, accuracy: 28.99%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.0010155571831597222 
+
+Pruned, accuracy: 13.65%
+
+Pruned -> trained, accuracy: 85.18%
+
+sparsity: 0.0007120768229166666 
+
+Pruned -> trained -> Pruned, accuracy: 13.96%
+
+*****Layout conv2d_6, Best threshold: 0.020, accuracy: 84.70% *****
+
+
+----------------Pruning layer dense_1-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.8389396667480469 
+
+Pruned, accuracy: 84.17%
+
+Pruned -> trained, accuracy: 85.04%
+
+sparsity: 0.8268718719482422 
+
+Pruned -> trained -> Pruned, accuracy: 84.99%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.6807422637939453 
+
+Pruned, accuracy: 84.18%
+
+Pruned -> trained, accuracy: 84.51%
+
+sparsity: 0.6368350982666016 
+
+Pruned -> trained -> Pruned, accuracy: 84.44%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.5292701721191406 
+
+Pruned, accuracy: 84.21%
+
+Pruned -> trained, accuracy: 84.80%
+
+sparsity: 0.47771644592285156 
+
+Pruned -> trained -> Pruned, accuracy: 85.05%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.38936614990234375 
+
+Pruned, accuracy: 84.21%
+
+Pruned -> trained, accuracy: 84.65%
+
+sparsity: 0.3394737243652344 
+
+Pruned -> trained -> Pruned, accuracy: 84.63%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.2682666778564453 
+
+Pruned, accuracy: 83.98%
+
+Pruned -> trained, accuracy: 85.39%
+
+sparsity: 0.2377777099609375 
+
+Pruned -> trained -> Pruned, accuracy: 85.30%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.17018508911132812 
+
+Pruned, accuracy: 83.98%
+
+Pruned -> trained, accuracy: 84.66%
+
+sparsity: 0.1485919952392578 
+
+Pruned -> trained -> Pruned, accuracy: 84.70%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.09871292114257812 
+
+Pruned, accuracy: 83.99%
+
+Pruned -> trained, accuracy: 84.74%
+
+sparsity: 0.08527755737304688 
+
+Pruned -> trained -> Pruned, accuracy: 84.59%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.052371978759765625 
+
+Pruned, accuracy: 83.34%
+
+Pruned -> trained, accuracy: 84.70%
+
+sparsity: 0.045345306396484375 
+
+Pruned -> trained -> Pruned, accuracy: 84.31%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.024957656860351562 
+
+Pruned, accuracy: 81.49%
+
+Pruned -> trained, accuracy: 85.58%
+
+sparsity: 0.02175140380859375 
+
+Pruned -> trained -> Pruned, accuracy: 84.96%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.010881423950195312 
+
+Pruned, accuracy: 74.27%
+
+Pruned -> trained, accuracy: 85.78%
+
+sparsity: 0.009447097778320312 
+
+Pruned -> trained -> Pruned, accuracy: 83.32%
+
+*****Layout dense_1, Best threshold: 0.050, accuracy: 85.30% *****
+
+
+----------------Pruning layer dense_2-------------------------
+>>> Current threshold is 0.010 <<<
+sparsity: 0.9068359375 
+
+Pruned, accuracy: 84.23%
+
+Pruned -> trained, accuracy: 84.95%
+
+sparsity: 0.8927734375 
+
+Pruned -> trained -> Pruned, accuracy: 84.96%
+
+>>> Current threshold is 0.020 <<<
+sparsity: 0.81171875 
+
+Pruned, accuracy: 84.10%
+
+Pruned -> trained, accuracy: 84.58%
+
+sparsity: 0.780859375 
+
+Pruned -> trained -> Pruned, accuracy: 84.63%
+
+>>> Current threshold is 0.030 <<<
+sparsity: 0.718359375 
+
+Pruned, accuracy: 84.16%
+
+Pruned -> trained, accuracy: 85.30%
+
+sparsity: 0.6955078125 
+
+Pruned -> trained -> Pruned, accuracy: 85.37%
+
+>>> Current threshold is 0.040 <<<
+sparsity: 0.6279296875 
+
+Pruned, accuracy: 84.27%
+
+Pruned -> trained, accuracy: 85.13%
+
+sparsity: 0.5857421875 
+
+Pruned -> trained -> Pruned, accuracy: 85.00%
+
+>>> Current threshold is 0.050 <<<
+sparsity: 0.5322265625 
+
+Pruned, accuracy: 83.94%
+
+Pruned -> trained, accuracy: 85.37%
+
+sparsity: 0.4974609375 
+
+Pruned -> trained -> Pruned, accuracy: 85.35%
+
+>>> Current threshold is 0.060 <<<
+sparsity: 0.431640625 
+
+Pruned, accuracy: 83.86%
+
+Pruned -> trained, accuracy: 85.26%
+
+sparsity: 0.3873046875 
+
+Pruned -> trained -> Pruned, accuracy: 85.36%
+
+>>> Current threshold is 0.070 <<<
+sparsity: 0.3361328125 
+
+Pruned, accuracy: 83.75%
+
+Pruned -> trained, accuracy: 85.43%
+
+sparsity: 0.3005859375 
+
+Pruned -> trained -> Pruned, accuracy: 85.22%
+
+>>> Current threshold is 0.080 <<<
+sparsity: 0.2458984375 
+
+Pruned, accuracy: 83.14%
+
+Pruned -> trained, accuracy: 85.70%
+
+sparsity: 0.2111328125 
+
+Pruned -> trained -> Pruned, accuracy: 85.49%
+
+>>> Current threshold is 0.090 <<<
+sparsity: 0.1677734375 
+
+Pruned, accuracy: 80.67%
+
+Pruned -> trained, accuracy: 85.88%
+
+sparsity: 0.1255859375 
+
+Pruned -> trained -> Pruned, accuracy: 85.09%
+
+>>> Current threshold is 0.100 <<<
+sparsity: 0.103125 
+
+Pruned, accuracy: 76.64%
+
+Pruned -> trained, accuracy: 85.43%
+
+sparsity: 0.08125 
+
+Pruned -> trained -> Pruned, accuracy: 84.85%
+
+*****Layout dense_2, Best threshold: 0.080, accuracy: 85.49% *****
+
+
+Our optimal_sol
+conv2d_1 : 0.04
+conv2d_2 : 0.03
+conv2d_3 : 0.04
+conv2d_4 : 0.03
+conv2d_5 : 0.02
+conv2d_6 : 0.02
+dense_1 : 0.05
+dense_2 : 0.08
+
+---------------Combine Pruning Training-----------------------------
+Layout: conv2d_1, threshold: 0.040,  sparsity: 0.6163194444444444
+Layout: conv2d_2, threshold: 0.030,  sparsity: 0.5921766493055556
+Layout: conv2d_3, threshold: 0.040,  sparsity: 0.3636881510416667
+Layout: conv2d_4, threshold: 0.030,  sparsity: 0.455322265625
+Layout: conv2d_5, threshold: 0.020,  sparsity: 0.5711263020833334
+Layout: conv2d_6, threshold: 0.020,  sparsity: 0.5342220730251737
+Layout: dense_1, threshold: 0.050,  sparsity: 0.2682666778564453
+Layout: dense_2, threshold: 0.080,  sparsity: 0.2458984375
+Combine pruning before training, accuracy: 69.82%
+
+2018-04-28 17:40:37.680507: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 164.25MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:37.680535: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 340.02MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:37.681895: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 144.50MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:37.683417: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 187.02MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:37.686527: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 170.56MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:37.694692: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 198.14MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:52.681583: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 155.25MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:52.681614: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 306.02MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:52.684094: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 161.52MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2018-04-28 17:40:52.691844: W tensorflow/core/common_runtime/bfc_allocator.cc:219] Allocator (GPU_0_bfc) ran out of memory trying to allocate 165.14MiB. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+Combine pruning after training, accuracy: 85.16%
+
+
+---------------Final Pruning Training -----------------------------
+Layout conv2d_1, threshold: 0.040, sparsity: 0.6012731481481481
+Layout conv2d_2, threshold: 0.030, sparsity: 0.555908203125
+Layout conv2d_3, threshold: 0.040, sparsity: 0.32421875
+Layout conv2d_4, threshold: 0.030, sparsity: 0.4100545247395833
+Layout conv2d_5, threshold: 0.020, sparsity: 0.5339321560329862
+Layout conv2d_6, threshold: 0.020, sparsity: 0.4971567789713542
+Layout dense_1, threshold: 0.050, sparsity: 0.2305011749267578
+Layout dense_2, threshold: 0.080, sparsity: 0.2251953125
+Combine pruning then train then prune, accuracy: 81.23%
+
+689 of 1728 is zero
