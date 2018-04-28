@@ -50,7 +50,7 @@ def train(_model, epochs, patience, saved_path=None):
         cb_list.append(checkpoint)
 
     early_stopping = EarlyStopping(monitor="val_loss", patience=patience,
-                                   verbose=1, mode='auto')
+                                   verbose=0, mode='auto')
     cb_list.append(early_stopping)
 
     _model_details = _model.fit(x_train, y_train,
@@ -59,7 +59,7 @@ def train(_model, epochs, patience, saved_path=None):
                                 epochs=epochs,  # number of iterations
                                 validation_data=(x_test, y_test),
                                 callbacks=cb_list,
-                                verbose=2)
+                                verbose=0)
     return _model, _model_details
 
 
@@ -81,19 +81,22 @@ def save_history(_model_details, _history_path):
     with open(saved_dir + '/' + _history_path, 'w+b') as file_pi:
         pickle.dump(_model_details.history, file_pi)
 
+def save_model(_model, _model_path):
+    _model.save(saved_dir + '/' + _model_path)
+
 
 model = load_saved_model(DEFAULT_MODEL_PATH)
 if model is None:
     model = create_model()
-
-# Train default model
-model, model_details = train(model, 100, 10, saved_path=DEFAULT_MODEL_PATH,)
-
-save_history(model_details, DEFAULT_MODEL_HISTORY_PATH)
+    # Train default model
+    model, model_details = train(model, 100, 10, saved_path=DEFAULT_MODEL_PATH,)
+    save_history(model_details, DEFAULT_MODEL_HISTORY_PATH)
+else:
+    model = compile_model(model)
 
 # Evaluate the model
 score_ori = model.evaluate(x_test, y_test, verbose=0)
-print("Before Pruning, accuracy: %.2f%%" % (score_ori[1] * 100) + '\n')
+print("Original accuracy: %.2f%%" % (score_ori[1] * 100) + '\n')
 
 ori_weights = model.get_weights()
 print("{} of {} is zero".format(np.count_nonzero(ori_weights[0] == 0),
@@ -140,7 +143,7 @@ def drange(x, y, jump):
 optimal_sol = {}
 
 for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
-    print('Pruning layer ' + layer_name)
+    print("\n----------------Pruning layer " +  layer_name + "-------------------------")
     model_copy = clone_model(model)
     model_copy.set_weights(model.get_weights())
     # Generate layer dictionary from cloned model
@@ -153,28 +156,54 @@ for layer_name, thresholds in zip(prune_layouts, prune_thresholds):
                             thresholds[2]):
         # weights[0] is weight tensor, weights[1] is bias tensor,
         # prune weights only
-        print('Current threshold is {:.3f}'.format(threshold))
+        print('>>> Current threshold is {:.3f} <<<'.format(threshold))
         saved_name = layer_name + '_{:.3f}'.format(threshold)
         tmp_model = load_saved_model(saved_name + '.h5')
+
+        #print('zeros before first pruning {}'.format(np.count_nonzero(layer.get_weights()[0] == 0)))
+        weights_copy = np.copy(weights)
+        weights_copy[0] = prune(weights_copy[0], threshold)
+        layer.set_weights(weights_copy)
+        print("sparsity:",
+              np.count_nonzero(weights_copy[0]) / weights_copy[0].size, '\n')
+        model_copy = compile_model(model_copy)
+        # print('zeros after first pruning {}'.format(np.count_nonzero(model_copy.get_layer(layer_name).get_weights()[0] == 0)))
+        score_copy = model_copy.evaluate(x_test, y_test, verbose=0)
+        print("Pruned, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
+
+        score_copy = None
         if tmp_model is not None:
-            print('Already trained')
-            model_copy = compile_model(tmp_model)
+            # print('Already trained')
+            model_saved = compile_model(tmp_model)
+            score_copy = model_saved.evaluate(x_test, y_test, verbose=0)
+            print("Pruned -> trained, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
+            layer_saved = model_saved.get_layer(layer_name)
+            weights_saved = layer_saved.get_weights()
+            weights_saved[0] = prune(weights_saved[0], threshold)
+            layer_saved.set_weights(weights_saved)
+            print("sparsity:",
+                  np.count_nonzero(weights_saved[0]) / weights_saved[0].size, '\n')
+            score_copy = model_saved.evaluate(x_test, y_test, verbose=0)
+            print("Pruned -> trained -> Pruned, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
         else:
-            weights_copy = np.copy(weights)
+            model_copy, model_copy_detail = train(model_copy, 50, 5)
+            save_model(model_copy,saved_name)
+            save_history(model_copy_detail, saved_name + '_history')
+            score_copy = model_copy.evaluate(x_test, y_test, verbose=0)
+            print("Pruned -> trained, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
+            layer = model_copy.get_layer(layer_name)
+            weights_copy = layer.get_weights()
             weights_copy[0] = prune(weights_copy[0], threshold)
             layer.set_weights(weights_copy)
             print("sparsity:",
                   np.count_nonzero(weights_copy[0]) / weights_copy[0].size, '\n')
-            model_copy, model_copy_detail = train(model_copy, 50, 5)
-            model_copy.save(filepath=saved_name + '.h5')
-            save_history(model_copy_detail, saved_name + '_history')
-        score_copy = model_copy.evaluate(x_test, y_test, verbose=0)
-        print("After Pruning, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
+            score_copy = model_copy.evaluate(x_test, y_test, verbose=0)
+            print("Pruned -> trained -> Pruned, accuracy: %.2f%%" % (score_copy[1] * 100) + '\n')
         accuracy_threshold.append((threshold, score_copy[1]))
     best_threshold, best_threshold_acc = max(accuracy_threshold,
                                              key=itemgetter(1))
     optimal_sol[layer_name] = best_threshold
-    print("Layout {}, Best threshold: {:.3f}, accuracy: {:.2%} \n"
+    print("*****Layout {}, Best threshold: {:.3f}, accuracy: {:.2%} *****\n"
           .format(layer_name, best_threshold, best_threshold_acc))
 
 print("\nOur optimal_sol")
@@ -183,31 +212,36 @@ for k in optimal_sol:
 
 print("\n---------------Combine Pruning Training-----------------------------")
 
+model_transition = clone_model(model)
+model_transition.set_weights(model.get_weights())
+# Generate layer dictionary from cloned model
+layer_dict = dict([(layer.name, layer) for layer in model_transition.layers])
+for layer_name in prune_layouts:
+    t_layer = layer_dict[layer_name]
+    t_weights = t_layer.get_weights()
+    t_threshold = optimal_sol[layer_name]
+    t_weights[0] = prune(t_weights[0], t_threshold)
+    t_layer.set_weights(t_weights)
+    print("Layout: {}, threshold: {:.3f},  sparsity: {}"
+          .format(layer_name, t_threshold,
+                  np.count_nonzero(t_weights[0]) / t_weights[0].size))
+model_transition = compile_model(model_transition)
+score_transition = model_transition.evaluate(x_test, y_test, verbose=0)
+print("Combine pruning before training, accuracy: %.2f%%" % (
+        score_transition[1] * 100) + '\n')
+
 tmp_model = load_saved_model(DEF_TRAN_PATH)
 if tmp_model is not None:
     print('Already trained')
     model_transition = compile_model(tmp_model)
 else:
-    model_transition = clone_model(model)
-    model_transition.set_weights(model.get_weights())
-    # Generate layer dictionary from cloned model
-    layer_dict = dict([(layer.name, layer) for layer in model_transition.layers])
-    for layer_name in prune_layouts:
-        t_layer = layer_dict[layer_name]
-        t_weights = t_layer.get_weights()
-        t_threshold = optimal_sol[layer_name]
-        t_weights[0] = prune(t_weights[0], t_threshold)
-        t_layer.set_weights(t_weights)
-        print("Layout: {}, threshold: {:.3f},  sparsity: {}"
-              .format(layer_name, t_threshold,
-                      np.count_nonzero(t_weights[0]) / t_weights[0].size))
     # Train one time
     model_transition, model_transition_detail = train(model_transition, 100, 10)
-    model_transition.save(DEF_TRAN_PATH)
+    save_model(model_transition,DEF_TRAN_PATH)
     save_history(model_transition_detail, DEF_TRAN_HIS_PATH)
 
 score_transition = model_transition.evaluate(x_test, y_test, verbose=0)
-print("After combine pruning, accuracy: %.2f%%" % (
+print("Combine pruning after training, accuracy: %.2f%%" % (
         score_transition[1] * 100) + '\n')
 
 print("\n---------------Final Pruning Training -----------------------------")
@@ -232,9 +266,9 @@ else:
     model_final = compile_model(model_final)
 
 score_final = model_final.evaluate(x_test, y_test, verbose=0)
-print("After combine pruning, accuracy: %.2f%%" % (
+print("Combine pruning then train then prune, accuracy: %.2f%%" % (
         score_final[1] * 100) + '\n')
-model_final.save(DEF_FINAL_PATH)
+save_model(model_final,DEF_FINAL_PATH)
 
 final_weights = model_final.get_weights()
 print("{} of {} is zero".format(np.count_nonzero(final_weights[0] == 0),
